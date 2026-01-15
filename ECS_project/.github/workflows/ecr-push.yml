@@ -1,8 +1,9 @@
-name: Build and push to ECR
+name: Build and Push to ECR
 
 on:
   push:
-    branches: [ "main" ]
+    branches:
+      - main
 
 env:
   AWS_REGION: ${{ secrets.AWS_REGION }}
@@ -32,7 +33,7 @@ jobs:
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
         run: |
-          docker build -t $ECR_REPOSITORY ./memos
+          docker build -t $ECR_REPOSITORY .
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker tag $ECR_REPOSITORY:latest $ECR_REGISTRY/$ECR_REPOSITORY:latest
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
